@@ -39,3 +39,12 @@ build/
 # vendor/
 # __pycache__/
 # *.pyc
+
+# Bootstrap-managed repositories (cloned by bootstrap.sh)
+fulfillment-service/
+osac-operator/
+osac-aap/
+osac-installer/
+osac-test-infra/
+enhancement-proposals/
+docs/

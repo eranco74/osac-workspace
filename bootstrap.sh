@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "🚀 Setting up OSAC Workspace..."
+
+# Base URL for all repos
+GITHUB_ORG="https://github.com/osac-project"
+
+# List of repos to clone
+REPOS=(
+  "fulfillment-service"
+  "osac-operator"
+  "osac-aap"
+  "osac-installer"
+  "osac-test-infra"
+  "enhancement-proposals"
+  "docs"
+)
+
+# Clone or update each repo
+for repo in "${REPOS[@]}"; do
+  if [ -d "$repo" ]; then
+    echo "📦 Updating $repo..."
+    (cd "$repo" && git fetch origin && git reset --hard origin/main)
+  else
+    echo "📥 Cloning $repo..."
+    git clone "${GITHUB_ORG}/${repo}.git"
+    (cd "$repo" && git checkout main)
+  fi
+done
+
+echo ""
+echo "✅ Workspace ready! All repos are on their latest main branch."
+echo ""
+echo "📂 Available repos:"
+for repo in "${REPOS[@]}"; do
+  echo "   - $repo"
+done

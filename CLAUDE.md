@@ -1,6 +1,17 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working in this workspace.
+
+## How to Use This File
+
+This is a **workspace-level** CLAUDE.md for cross-component guidance. Each component repository has its own CLAUDE.md:
+
+- **This file**: Cross-component architecture, multi-repo workflows, workspace-level conventions
+- **Component CLAUDE.md files**: Component-specific build commands, testing, patterns, conventions
+
+**When working on a component**: Always read that component's CLAUDE.md file first (e.g., `fulfillment-service/CLAUDE.md`, `osac-operator/CLAUDE.md`).
+
+**When working across components**: Use this file for architecture context and cross-repo coordination patterns.
 
 ## Project Context
 
@@ -12,7 +23,7 @@ OSAC (OpenShift-as-a-Service-in-a-Container) is a fulfillment system for provisi
 
 ### Repository Structure
 
-This is a monorepo containing:
+This is a **meta-workspace** that uses `bootstrap.sh` to clone all OSAC component repositories as independent Git repos:
 
 - **fulfillment-service**: gRPC server implementation with REST gateway, PostgreSQL backend, and integrated API definitions
 - **osac-operator**: Kubernetes operator for deploying OpenShift clusters via Hosted Control Planes
@@ -20,8 +31,50 @@ This is a monorepo containing:
 - **osac-installer**: Installation manifests and prerequisites
 - **osac-test-infra**: Integration testing infrastructure
 - **enhancement-proposals**: Design documents and enhancement proposals
+- **docs**: Architecture documentation, diagrams, and design guides (see `docs/architecture/` for system design)
+
+**Getting the repos**: Run `./bootstrap.sh` from the workspace root to clone or update all repos to latest `main`.
 
 Note: `fulfillment-api` and `fulfillment-common` were merged into `fulfillment-service`.
+
+### Working with Component Repositories
+
+**IMPORTANT**: Each component repo is an independent Git repository with its own CLAUDE.md file containing component-specific instructions. When working on a specific component:
+
+1. **Check component CLAUDE.md first**: Before making changes in any component repo (e.g., `fulfillment-service/`, `osac-operator/`), read that repo's `CLAUDE.md` file for component-specific build commands, conventions, and patterns.
+
+2. **Use Git worktrees for feature work**: When implementing features that span multiple commits, use git worktrees to isolate the work:
+   ```bash
+   cd fulfillment-service
+   git worktree add ../fulfillment-service-feature-branch feature-branch
+   cd ../fulfillment-service-feature-branch
+   # Work here, then remove worktree when done
+   ```
+
+3. **Cross-component changes**: When a feature requires changes across multiple repos (e.g., API changes in `fulfillment-service` + operator changes in `osac-operator`):
+   - Read both component CLAUDE.md files
+   - Create feature branches in each affected repo
+   - Use git worktrees if the changes require multiple commits
+   - Coordinate PRs (mention related PRs in descriptions)
+
+4. **Navigation pattern**:
+   ```bash
+   # From workspace root
+   cd fulfillment-service      # Enter component repo
+   cat CLAUDE.md               # Read component instructions
+   # Make changes following component-specific guidance
+   ```
+
+5. **Component-specific context**: This workspace CLAUDE.md provides **cross-component** context (architecture, multi-repo workflows). Component CLAUDE.md files provide **component-specific** context (build commands, testing, conventions).
+
+### Architecture Documentation
+
+For system architecture, design patterns, and component interactions, refer to:
+- `docs/architecture/` - High-level architecture diagrams and design documents
+- `docs/getting-started/` - Setup guides and tutorials
+- `enhancement-proposals/` - Detailed enhancement proposals and RFCs
+
+When explaining architectural decisions or designing new features, check these directories first.
 
 ### Current Project State
 
@@ -250,6 +303,58 @@ OpenAPI specs are located at:
 - `fulfillment-service/openapi/v2/openapi.json`
 - `fulfillment-service/openapi/v3/openapi.yaml`
 
+## Git Workflow Best Practices
+
+### When to Use Git Worktrees
+
+**Use worktrees for**:
+- Feature branches requiring multiple commits
+- Long-running development that needs isolation from main
+- Parallel work on different features in the same repo
+- PR development where you want to keep main clean
+
+**Example**:
+```bash
+cd fulfillment-service
+git worktree add ../fulfillment-service-add-network-api feature/add-network-api
+cd ../fulfillment-service-add-network-api
+# Make commits here, push when ready
+git worktree remove ../fulfillment-service-add-network-api  # Clean up when PR is merged
+```
+
+**Work directly on main for**:
+- Quick fixes (1-2 commits)
+- Documentation updates
+- Exploration and investigation
+- Running tests without committing
+
+### Cross-Repo Feature Development
+
+When a feature spans multiple repos (e.g., API change + operator update):
+
+1. **Plan the dependency order**: Which repo change must land first?
+2. **Create branches in each repo**: Use consistent branch names (e.g., `feature/add-storage-api`)
+3. **Use worktrees if needed**: Isolate multi-commit work in each repo
+4. **Link PRs**: Mention related PRs in descriptions (e.g., "Depends on osac-project/fulfillment-service#123")
+5. **Merge order**: Merge foundation changes first, then dependent changes
+
+**Example**:
+```bash
+# Scenario: Add storage API (requires changes in fulfillment-service and osac-operator)
+
+# Step 1: Create API in fulfillment-service
+cd fulfillment-service
+git worktree add ../fulfillment-service-storage feature/add-storage-api
+cd ../fulfillment-service-storage
+# Implement API, commit, push, create PR
+
+# Step 2: Update operator to use new API
+cd ../../osac-operator
+git worktree add ../osac-operator-storage feature/add-storage-api
+cd ../osac-operator-storage
+# Implement operator changes, commit, push, create PR with note "Depends on fulfillment-service#X"
+```
+
 ## GSD Workflow Integration
 
 This project uses the GSD (Get Stuff Done) workflow system:
@@ -264,6 +369,7 @@ When working on this project:
 - Use `/gsd:progress` to check project status
 - Use `/gsd:plan-phase` when planning new work
 - Use `/gsd:execute-phase` to implement planned phases
+- GSD workflows operate at the workspace level but can coordinate work across component repos
 
 ## Key Technologies
 
