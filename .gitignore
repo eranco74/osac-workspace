@@ -20,6 +20,8 @@ kubeconfig
 !.claude/settings.json
 !.claude/rules/
 !.claude/skills/
+!.claude/commands/
+!.claude/workflows/
 .mcp.json
 
 # Editor files
