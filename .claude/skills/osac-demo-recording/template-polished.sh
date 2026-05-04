@@ -126,8 +126,11 @@ run_demo() {
   fi
 }
 
+# When sourced inside asciinema's bash -c, skip the Main block and just define functions.
+(return 0 2>/dev/null) && return 0
+
 # Main
-SCRIPT_PATH=$(printf '%q' "$(readlink -f "$0")")
+SCRIPT_PATH="$(readlink -f "$0")"
 
 case "${1:-}" in
   --dry-run)
@@ -136,10 +139,10 @@ case "${1:-}" in
   --cleanup)
     export CLEANUP=true
     export NAMESPACE CAST_FILE
-    asciinema rec --title "OSAC API Demo" -c "bash -c \"source ${SCRIPT_PATH} && run_demo\"" "${CAST_FILE}"
+    asciinema rec --title "OSAC API Demo" -c "bash -c 'source \"\$1\" && run_demo' -- $(printf '%q' "${SCRIPT_PATH}")" "${CAST_FILE}"
     ;;
   *)
     export NAMESPACE CAST_FILE
-    asciinema rec --title "OSAC API Demo" -c "bash -c \"source ${SCRIPT_PATH} && run_demo\"" "${CAST_FILE}"
+    asciinema rec --title "OSAC API Demo" -c "bash -c 'source \"\$1\" && run_demo' -- $(printf '%q' "${SCRIPT_PATH}")" "${CAST_FILE}"
     ;;
 esac
