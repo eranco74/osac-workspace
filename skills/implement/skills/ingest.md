@@ -30,7 +30,7 @@ approach.
 ### Step 1: Identify the Task
 
 The user will provide one of:
-- A Jira issue key or URL (fetch via Jira MCP)
+- A Jira issue key or URL (fetch via `jira issue view <KEY> --plain`)
 - A path to an existing task file from the design workflow
 
 Extract the Jira key (e.g., `OSAC-1234`) and set it as the context identifier.

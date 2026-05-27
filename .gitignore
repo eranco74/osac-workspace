@@ -60,6 +60,9 @@ osac-test-infra/
 enhancement-proposals/
 docs/
 
+# Workflow artifacts (bugfix, implement)
+.artifacts/
+
 # AI Tooling
 .cursor/
 .gemini/

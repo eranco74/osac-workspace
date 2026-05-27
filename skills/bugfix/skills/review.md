@@ -170,7 +170,7 @@ Persist the review report to `.artifacts/bugfix/{issue}/review.md`, then present
 
 Use this structure:
 
-```
+```markdown
 ## Fix Review
 
 [2-3 sentence assessment of the fix — what it does well, what concerns you]
@@ -221,13 +221,13 @@ are insufficient, say what's missing.
 
 **After testing is complete:**
 
-```
+```text
 /review
 ```
 
 **With specific concerns to focus on:**
 
-```
+```text
 /review I'm worried the mock doesn't match the real API behavior
 ```
 

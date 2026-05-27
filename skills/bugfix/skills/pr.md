@@ -35,6 +35,10 @@ the documented recovery paths instead of guessing.
 - **Never attempt `gh repo fork` without asking the user first.**
 - **Never fall back to patch files without exhausting all other options.**
 
+## OSAC Projects
+
+For OSAC component repos, follow the fork-based PR workflow in `.claude/rules/cross-repo-workflow.md` — push to `fork` remote (never `origin`), include the Jira ticket key in the PR title. Validation (build, test, lint) should already be complete from earlier phases (`/test`, `/review`).
+
 ## Process
 
 ### Placeholders Used in This Skill
@@ -273,12 +277,12 @@ fine — just use `origin` in subsequent commands instead of `fork`.
 ### Step 3a: Check Fork Sync Status
 
 **Why this check exists:** When a user's fork is out of sync with upstream,
-particularly when upstream has added workflow files (`.workflows/`) that
+particularly when upstream has added workflow files (`.github/workflows/`) that
 don't exist in the fork, pushing a feature branch can fail with a confusing
 error like:
 
 ```
-refusing to allow a GitHub App to create or update workflow `.workflows/foo.yml` without `workflows` permission
+refusing to allow a GitHub App to create or update workflow `.github/workflows/foo.yml` without `workflows` permission
 ```
 
 This happens because GitHub sees the push as "creating" workflow files (from
@@ -294,7 +298,7 @@ git fetch fork
 
 # Check for workflow file differences between fork/main and local main
 # (local main should be synced with upstream)
-WORKFLOW_DIFF=$(git diff fork/main..main -- .workflows/ --name-only 2>/dev/null)
+WORKFLOW_DIFF=$(git diff fork/main..main -- .github/workflows/ --name-only 2>/dev/null)
 
 if [ -n "$WORKFLOW_DIFF" ]; then
   echo "Fork is out of sync with upstream (workflow files differ):"

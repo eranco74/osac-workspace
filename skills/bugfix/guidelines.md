@@ -29,6 +29,7 @@ Artifacts go in `.artifacts/bugfix/{issue}`.
 ## Hard Limits
 
 - No direct commits to `main` — always use feature branches
+- No pushing to `origin` — always push to `fork` remote, PRs go from `fork/<branch>` to `origin/main`
 - No token or secret logging — use `len(token)`, redact in logs
 - No force-push, hard reset, or destructive git operations
 - No modifying security-critical code without human review

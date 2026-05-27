@@ -135,12 +135,8 @@ implement/
 
 ## Getting Started
 
-```bash
-# Install the workflow
-./install.sh claude --workflows implement
+This workflow is pre-installed in `osac-workspace`. Run the `ingest` command with a Jira task key:
 
-# Or install all workflows
-./install.sh all
+```text
+/implement:ingest OSAC-1234
 ```
-
-Then in your project, run the `implement` workflow's `ingest` command for your Jira task (e.g., OSAC-1234).

@@ -23,6 +23,10 @@ user before taking action.
 - **No direct commits to main.** The feature branch must already exist from `/code`.
 - **Validation must have passed.** Check for a passing validation report before proceeding.
 
+## OSAC Projects
+
+For OSAC component repos, follow the fork-based PR workflow in `.claude/rules/cross-repo-workflow.md` — push to `fork` remote (never `origin`), include the Jira ticket key in the PR title. Validation (build, test, lint) should already be complete from the `/validate` phase.
+
 ## Process
 
 ### Step 1: Pre-Flight Checks
@@ -112,8 +116,10 @@ Confirm with the user before proceeding.
 
 ### Step 4: Push Branch
 
+Push to the fork remote (never `origin`):
+
 ```bash
-git push -u origin {branch-name}
+git push -u fork {branch-name}
 ```
 
 ### Step 5: Create PR Description

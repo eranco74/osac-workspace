@@ -117,7 +117,7 @@ The `osac-test-infra` repo provides skills for writing and debugging E2E tests. 
 
 ## Development Workflows
 
-- `/bugfix` — Systematic bug fix: assess → diagnose → reproduce → fix → test → review → pr
+- `/bugfix` — Systematic bug fix: assess → reproduce → diagnose → fix → test → review → document → pr
 - `/implement` — Task-to-code: ingest Jira task → plan → code (TDD) → validate → publish PR
 
 Both workflows are phase-based — you can jump to any phase directly (e.g., `/bugfix:fix`, `/implement:code`).

@@ -17,6 +17,7 @@
 - No fabricated implementations. Every code change must trace to a task requirement, acceptance criterion, or explicit user direction.
 - No auto-advancing between phases. Always wait for the user.
 - No publishing (creating PRs, pushing branches) without explicit user approval.
+- No pushing to `origin` — always push to `fork` remote, PRs go from `fork/<branch>` to `origin/main`.
 - No Jira modifications. This workflow is read-only with respect to Jira.
 - **No scope creep.** Do not refactor adjacent code, add features beyond the task, or "improve" code you didn't need to change. If you discover something that should be fixed, note it in the implementation report — don't fix it silently.
 - **No test shortcuts.** Do not write tests that test implementation details, mock internal logic, or exist solely to increase coverage numbers. Every test must validate a behavioral contract through a public interface.
