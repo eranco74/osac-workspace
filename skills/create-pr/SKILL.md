@@ -38,6 +38,8 @@ BRANCH=$(git branch --show-current)
 
 Run the repo-specific checks **before** pushing. Read the component's CLAUDE.md if unsure which commands apply.
 
+**IMPORTANT:** Re-run the full validation after every `git commit --amend` or any change to the commit contents. A passing check earlier in the session does not guarantee the final commit is clean — formatting, generated code, and tests must be verified against the exact commit being pushed.
+
 ### fulfillment-service
 
 ```bash
