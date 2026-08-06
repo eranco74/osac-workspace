@@ -65,7 +65,7 @@ rules:
     enabled: auto
     severity: error
     # required-fields: []
-    # required-metadata: []
+    required-metadata: ["version"]
 
   # .apm/ directory must contain skills/ or instructions/ with valid structure
   apm-structure-valid:
